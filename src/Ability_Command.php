@@ -63,7 +63,7 @@ use WP_CLI_Command;
  * @when    after_wp_load
  * @package wp-cli
  */
-class AbilityCommand extends WP_CLI_Command {
+class Ability_Command extends WP_CLI_Command {
 
 	/**
 	 * Default fields for list output.

@@ -19,5 +19,5 @@ $wpcli_ability_before_invoke = static function () {
 	}
 };
 
-WP_CLI::add_command( 'ability', '\WP_CLI\Ability\AbilityCommand', [ 'before_invoke' => $wpcli_ability_before_invoke ] );
-WP_CLI::add_command( 'ability category', '\WP_CLI\Ability\AbilityCategoryCommand', [ 'before_invoke' => $wpcli_ability_before_invoke ] );
+WP_CLI::add_command( 'ability', '\WP_CLI\Ability\Ability_Command', [ 'before_invoke' => $wpcli_ability_before_invoke ] );
+WP_CLI::add_command( 'ability category', '\WP_CLI\Ability\Ability_Category_Command', [ 'before_invoke' => $wpcli_ability_before_invoke ] );

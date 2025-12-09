@@ -43,7 +43,7 @@ use WP_CLI_Command;
  * @when    after_wp_load
  * @package wp-cli
  */
-class AbilityCategoryCommand extends WP_CLI_Command {
+class Ability_Category_Command extends WP_CLI_Command {
 
 	/**
 	 * Default fields for list output.

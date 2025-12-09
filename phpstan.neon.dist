@@ -1,0 +1,29 @@
+parameters:
+  level: 9
+  paths:
+    - src
+    - ability-command.php
+  scanDirectories:
+    - vendor/wp-cli/wp-cli/php
+  scanFiles:
+    - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+  treatPhpDocTypesAsCertain: false
+  ignoreErrors:
+    # WP-CLI command method signatures use untyped arrays
+    -
+      message: '#no value type specified in iterable type array#'
+      reportUnmatched: false
+    # WordPress Abilities API classes (WP 6.9+) not yet in stubs
+    -
+      message: '#Call to an undefined method WP_Ability::#'
+      reportUnmatched: false
+    -
+      message: '#Call to an undefined method WP_Ability_Category::#'
+      reportUnmatched: false
+    -
+      message: '#Call to static method YAMLDump\(\) on an unknown class Spyc#'
+      reportUnmatched: false
+    # Mixed type from assoc_args iteration
+    -
+      message: '#Cannot access offset string on mixed#'
+      reportUnmatched: false

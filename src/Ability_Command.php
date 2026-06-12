@@ -626,8 +626,8 @@ class Ability_Command extends WP_CLI_Command {
 			$input[ $key ] = $value;
 		}
 
-		// Return null if no input provided (for abilities without input schema).
-		return empty( $input ) ? null : $input;
+		// Return null only when no input was provided (no --input flag and no field args).
+		return ( empty( $input ) && null === $json_input ) ? null : $input;
 	}
 
 	/**

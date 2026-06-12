@@ -191,6 +191,19 @@ Feature: Manage abilities registered via the WordPress Abilities API.
               },
               'permission_callback' => '__return_true',
           ) );
+
+          wp_register_ability( 'test-plugin/simple-no-input', array(
+              'label'               => 'Simple No Input',
+              'description'         => 'Returns an empty array.',
+              'category'            => 'test-category',
+              'output_schema'       => array(
+                  'type' => 'array',
+              ),
+              'execute_callback'    => function() {
+                  return array();
+              },
+              'permission_callback' => '__return_true',
+          ) );
       } );
       """
 
@@ -222,6 +235,12 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Then STDOUT should be JSON containing:
       """
       {"sum":30}
+      """
+
+    When I run `wp ability run test-plugin/simple-no-input`
+    Then STDOUT should be:
+      """
+      []
       """
 
     When I run `wp ability run test-plugin/get-site-title --format=yaml`

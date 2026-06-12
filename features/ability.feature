@@ -199,7 +199,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
               'output_schema'       => array(
                   'type' => 'array',
               ),
-              'execute_callback'    => function() {
+              'execute_callback'    => function( $input = null ) {
                   return array();
               },
               'permission_callback' => '__return_true',

@@ -369,7 +369,7 @@ class Ability_Command extends WP_CLI_Command {
 
 		// Build input data (with stdin support).
 		$input = $this->build_input_with_stdin( $assoc_args );
-		if ( null === $input && null !== $ability->get_meta_item( 'input_schema', null ) ) {
+		if ( null === $input && [] !== $ability->get_input_schema() ) {
 			$input = [];
 		}
 

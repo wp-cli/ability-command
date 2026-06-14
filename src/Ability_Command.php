@@ -369,6 +369,9 @@ class Ability_Command extends WP_CLI_Command {
 
 		// Build input data (with stdin support).
 		$input = $this->build_input_with_stdin( $assoc_args );
+		if ( null === $input && [] !== $ability->get_input_schema() ) {
+			$input = [];
+		}
 
 		// Execute the ability.
 		$result = $ability->execute( $input );
@@ -593,7 +596,7 @@ class Ability_Command extends WP_CLI_Command {
 	 * Builds input data from associative arguments with stdin support.
 	 *
 	 * @param array $assoc_args Associative arguments.
-	 * @return array<string,mixed> The input data.
+	 * @return array<string,mixed>|null The input data, or null if none provided.
 	 */
 	private function build_input_with_stdin( $assoc_args ) {
 		$input = [];
@@ -626,7 +629,8 @@ class Ability_Command extends WP_CLI_Command {
 			$input[ $key ] = $value;
 		}
 
-		return $input;
+		// Return null only when no input was provided (no --input flag and no field args).
+		return ( empty( $input ) && null === $json_input ) ? null : $input;
 	}
 
 	/**

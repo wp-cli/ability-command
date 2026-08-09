@@ -28,7 +28,7 @@ use WP_CLI_Command;
  *     +---------------------------+----------------------+----------+------------------------------------------+
  *
  *     # Get details of a specific ability.
- *     $ wp ability get core/get-site-info --fields=name,label,category,readonly,show_in_rest
+ *     $ wp ability get core/get-site-info --fields=name,label,category,readonly,public,show_in_rest
  *     +---------------+----------------------+
  *     | Field         | Value                |
  *     +---------------+----------------------+
@@ -36,6 +36,7 @@ use WP_CLI_Command;
  *     | label         | Get Site Information |
  *     | category      | site                 |
  *     | readonly      | 1                    |
+ *     | public        | 1                    |
  *     | show_in_rest  | 1                    |
  *     +---------------+----------------------+
  *
@@ -92,6 +93,7 @@ class Ability_Command extends WP_CLI_Command {
 		'readonly',
 		'destructive',
 		'idempotent',
+		'public',
 		'show_in_rest',
 	];
 
@@ -105,6 +107,9 @@ class Ability_Command extends WP_CLI_Command {
 	 *
 	 * [--namespace=<prefix>]
 	 * : Filter abilities by namespace prefix (e.g., 'core' for 'core/*' abilities).
+	 *
+	 * [--public=<bool>]
+	 * : Filter abilities by the high-level client exposure flag.
 	 *
 	 * [--show-in-rest=<bool>]
 	 * : Filter abilities by REST API exposure.
@@ -142,7 +147,14 @@ class Ability_Command extends WP_CLI_Command {
 	 * * readonly
 	 * * destructive
 	 * * idempotent
+	 * * public
 	 * * show_in_rest
+	 *
+	 * The `public` field reports the high-level client exposure flag as declared
+	 * by the ability. As of WordPress 7.1 it seeds the default for channel-specific
+	 * flags such as `show_in_rest`, which take precedence when set explicitly.
+	 * On earlier versions the flag is stored but has no effect, so `public` and
+	 * `show_in_rest` may disagree.
 	 *
 	 * ## EXAMPLES
 	 *
@@ -164,6 +176,12 @@ class Ability_Command extends WP_CLI_Command {
 	 *     # List abilities exposed to REST API.
 	 *     $ wp ability list --show-in-rest=true
 	 *
+	 *     # List abilities meant to be available to clients.
+	 *     $ wp ability list --public=true
+	 *
+	 *     # Find abilities that opt out of REST despite being public.
+	 *     $ wp ability list --public=true --show-in-rest=false
+	 *
 	 *     # List abilities as JSON.
 	 *     $ wp ability list --format=json
 	 *
@@ -182,6 +200,7 @@ class Ability_Command extends WP_CLI_Command {
 		$abilities     = wp_get_abilities();
 		$category_slug = Utils\get_flag_value( $assoc_args, 'category' );
 		$namespace     = Utils\get_flag_value( $assoc_args, 'namespace' );
+		$public        = $this->parse_bool_filter( $assoc_args, 'public' );
 		$show_in_rest  = $this->parse_bool_filter( $assoc_args, 'show-in-rest' );
 
 		$items = [];
@@ -203,6 +222,14 @@ class Ability_Command extends WP_CLI_Command {
 				}
 			}
 
+			// Filter by public if specified.
+			if ( null !== $public ) {
+				$ability_public = '1' === $ability_data['public'];
+				if ( $public !== $ability_public ) {
+					continue;
+				}
+			}
+
 			// Filter by show_in_rest if specified.
 			if ( null !== $show_in_rest ) {
 				$ability_rest = '1' === $ability_data['show_in_rest'];
@@ -213,6 +240,8 @@ class Ability_Command extends WP_CLI_Command {
 
 			$items[] = $ability_data;
 		}
+
+		$this->maybe_debug_inert_public_flag( $items );
 
 		$formatter = $this->get_formatter( $assoc_args, $this->default_fields );
 		$formatter->display_items( $items );
@@ -245,6 +274,8 @@ class Ability_Command extends WP_CLI_Command {
 	 *
 	 * ## AVAILABLE FIELDS
 	 *
+	 * These fields will be displayed by default:
+	 *
 	 * * name
 	 * * label
 	 * * category
@@ -254,7 +285,21 @@ class Ability_Command extends WP_CLI_Command {
 	 * * readonly
 	 * * destructive
 	 * * idempotent
+	 * * public
 	 * * show_in_rest
+	 *
+	 * These fields are optionally available:
+	 *
+	 * * meta
+	 *
+	 * The `public` field reports the high-level client exposure flag as declared
+	 * by the ability. As of WordPress 7.1 it seeds the default for channel-specific
+	 * flags such as `show_in_rest`, which take precedence when set explicitly.
+	 * On earlier versions the flag is stored but has no effect, so `public` and
+	 * `show_in_rest` may disagree.
+	 *
+	 * The `meta` field renders the raw metadata as JSON. It is the only way to
+	 * inspect channel-specific settings registered by plugins, such as `mcp`.
 	 *
 	 * ## EXAMPLES
 	 *
@@ -272,8 +317,13 @@ class Ability_Command extends WP_CLI_Command {
 	 *     | readonly      | 1                    |
 	 *     | destructive   | 0                    |
 	 *     | idempotent    | 1                    |
+	 *     | public        | 1                    |
 	 *     | show_in_rest  | 1                    |
 	 *     +---------------+----------------------+
+	 *
+	 *     # Inspect channel-specific settings that have no field of their own.
+	 *     $ wp ability get my-plugin/my-ability --field=meta
+	 *     {"annotations":{"readonly":true,"destructive":false,"idempotent":null},"mcp":{"public":false},"show_in_rest":true,"public":true}
 	 *
 	 *     # Get ability as JSON.
 	 *     $ wp ability get core/get-site-info --format=json
@@ -294,6 +344,8 @@ class Ability_Command extends WP_CLI_Command {
 		}
 
 		$ability_data = $this->format_ability_for_get( $ability );
+
+		$this->maybe_debug_inert_public_flag( [ $ability_data ] );
 
 		$formatter = $this->get_formatter( $assoc_args, $this->get_fields );
 		$formatter->display_item( $ability_data );
@@ -649,6 +701,7 @@ class Ability_Command extends WP_CLI_Command {
 			'readonly'     => $this->format_annotation( $annotations['readonly'] ),
 			'destructive'  => $this->format_annotation( $annotations['destructive'] ),
 			'idempotent'   => $this->format_annotation( $annotations['idempotent'] ),
+			'public'       => $ability->get_meta_item( 'public', false ) ? '1' : '0',
 			'show_in_rest' => $ability->get_meta_item( 'show_in_rest', false ) ? '1' : '0',
 		];
 	}
@@ -661,6 +714,7 @@ class Ability_Command extends WP_CLI_Command {
 	 */
 	private function format_ability_for_get( $ability ) {
 		$annotations = $this->get_annotations( $ability );
+		$meta        = $ability->get_meta();
 
 		return [
 			'name'          => $ability->get_name(),
@@ -672,7 +726,9 @@ class Ability_Command extends WP_CLI_Command {
 			'readonly'      => $this->format_annotation( $annotations['readonly'] ),
 			'destructive'   => $this->format_annotation( $annotations['destructive'] ),
 			'idempotent'    => $this->format_annotation( $annotations['idempotent'] ),
+			'public'        => $ability->get_meta_item( 'public', false ) ? '1' : '0',
 			'show_in_rest'  => $ability->get_meta_item( 'show_in_rest', false ) ? '1' : '0',
+			'meta'          => ! empty( $meta ) ? wp_json_encode( $meta ) : '{}',
 		];
 	}
 
@@ -714,6 +770,33 @@ class Ability_Command extends WP_CLI_Command {
 		}
 
 		return $parsed;
+	}
+
+	/**
+	 * Emits a debug note when the `public` meta flag is declared but inert.
+	 *
+	 * WordPress only resolves `public` into channel-specific flags such as
+	 * `show_in_rest` as of 7.1. On earlier versions the flag is stored as
+	 * declared but has no effect on client exposure, so `public` and
+	 * `show_in_rest` can disagree for no visible reason.
+	 *
+	 * @param array<int,array<string,mixed>> $items The formatted abilities.
+	 * @return void
+	 */
+	private function maybe_debug_inert_public_flag( $items ) {
+		if ( ! Utils\wp_version_compare( '7.1', '<' ) ) {
+			return;
+		}
+
+		foreach ( $items as $item ) {
+			if ( isset( $item['public'] ) && '1' === $item['public'] ) {
+				WP_CLI::debug(
+					'The `public` meta flag is only resolved into channel-specific flags such as `show_in_rest` as of WordPress 7.1. On this version it is reported as declared but has no effect on client exposure.',
+					'ability'
+				);
+				return;
+			}
+		}
 	}
 
 	/**

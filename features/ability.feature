@@ -384,42 +384,16 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       } );
       """
 
-    When I run `wp ability list --namespace=test-plugin --show-in-rest=true --field=name`
+    When I run `wp ability list --namespace=test-plugin --show-in-rest --field=name`
     Then STDOUT should be:
       """
       test-plugin/public-ability
       """
 
-    When I run `wp ability list --namespace=test-plugin --show-in-rest=false --field=name`
+    When I run `wp ability list --namespace=test-plugin --no-show-in-rest --field=name`
     Then STDOUT should be:
       """
       test-plugin/private-ability
-      """
-
-  @require-wp-6.9
-  Scenario: Reject invalid boolean filter values.
-    When I try `wp ability list --public=bogus`
-    Then STDERR should contain:
-      """
-      Invalid value specified for 'public'
-      """
-
-    When I try `wp ability list --show-in-rest=bogus`
-    Then STDERR should contain:
-      """
-      Invalid value specified for 'show-in-rest'
-      """
-
-    When I try `wp ability list --public=`
-    Then STDERR should contain:
-      """
-      Invalid value specified for 'public'
-      """
-
-    When I try `wp ability list --show-in-rest=`
-    Then STDERR should contain:
-      """
-      Invalid value specified for 'show-in-rest'
       """
 
   @require-wp-7.1
@@ -525,13 +499,13 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       } );
       """
 
-    When I run `wp ability list --namespace=test-plugin --public=true --field=name`
+    When I run `wp ability list --namespace=test-plugin --public --field=name`
     Then STDOUT should be:
       """
       test-plugin/public-ability
       """
 
-    When I run `wp ability list --namespace=test-plugin --public=false --field=name`
+    When I run `wp ability list --namespace=test-plugin --no-public --field=name`
     Then STDOUT should be:
       """
       test-plugin/internal-ability

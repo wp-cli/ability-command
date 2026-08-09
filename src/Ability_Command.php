@@ -108,21 +108,11 @@ class Ability_Command extends WP_CLI_Command {
 	 * [--namespace=<prefix>]
 	 * : Filter abilities by namespace prefix (e.g., 'core' for 'core/*' abilities).
 	 *
-	 * [--public=<bool>]
-	 * : Filter abilities by the high-level client exposure flag.
-	 * ---
-	 * options:
-	 *   - true
-	 *   - false
-	 * ---
+	 * [--public]
+	 * : Only list abilities flagged for client exposure. Pass --no-public to invert.
 	 *
-	 * [--show-in-rest=<bool>]
-	 * : Filter abilities by REST API exposure.
-	 * ---
-	 * options:
-	 *   - true
-	 *   - false
-	 * ---
+	 * [--show-in-rest]
+	 * : Only list abilities exposed to the REST API. Pass --no-show-in-rest to invert.
 	 *
 	 * [--field=<field>]
 	 * : Prints the value of a single field for each ability.
@@ -184,13 +174,13 @@ class Ability_Command extends WP_CLI_Command {
 	 *     $ wp ability list --namespace=core
 	 *
 	 *     # List abilities exposed to REST API.
-	 *     $ wp ability list --show-in-rest=true
+	 *     $ wp ability list --show-in-rest
 	 *
 	 *     # List abilities meant to be available to clients.
-	 *     $ wp ability list --public=true
+	 *     $ wp ability list --public
 	 *
 	 *     # Find abilities that opt out of REST despite being public.
-	 *     $ wp ability list --public=true --show-in-rest=false
+	 *     $ wp ability list --public --no-show-in-rest
 	 *
 	 *     # List abilities as JSON.
 	 *     $ wp ability list --format=json
@@ -232,23 +222,18 @@ class Ability_Command extends WP_CLI_Command {
 				}
 			}
 
-			/*
-			 * Filter by exposure if specified. The synopsis restricts these to
-			 * 'true' or 'false', which WP-CLI validates before the command runs.
-			 * The bare `--public` and `--show-in-rest` forms arrive as boolean true.
-			 */
+			// Filter by public if specified.
 			if ( null !== $public ) {
-				$wanted_public  = 'true' === $public || true === $public;
 				$ability_public = '1' === $ability_data['public'];
-				if ( $wanted_public !== $ability_public ) {
+				if ( $public !== $ability_public ) {
 					continue;
 				}
 			}
 
+			// Filter by show_in_rest if specified.
 			if ( null !== $show_in_rest ) {
-				$wanted_rest  = 'true' === $show_in_rest || true === $show_in_rest;
 				$ability_rest = '1' === $ability_data['show_in_rest'];
-				if ( $wanted_rest !== $ability_rest ) {
+				if ( $show_in_rest !== $ability_rest ) {
 					continue;
 				}
 			}

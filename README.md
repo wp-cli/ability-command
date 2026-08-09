@@ -35,7 +35,7 @@ to register and discover distinct units of functionality within a WordPress site
     +---------------------------+----------------------+----------+------------------------------------------+
 
     # Get details of a specific ability.
-    $ wp ability get core/get-site-info --fields=name,label,category,readonly,show_in_rest
+    $ wp ability get core/get-site-info --fields=name,label,category,readonly,public,show_in_rest
     +---------------+----------------------+
     | Field         | Value                |
     +---------------+----------------------+
@@ -43,6 +43,7 @@ to register and discover distinct units of functionality within a WordPress site
     | label         | Get Site Information |
     | category      | site                 |
     | readonly      | 1                    |
+    | public        | 1                    |
     | show_in_rest  | 1                    |
     +---------------+----------------------+
 
@@ -74,7 +75,7 @@ to register and discover distinct units of functionality within a WordPress site
 Lists all registered abilities.
 
 ~~~
-wp ability list [--category=<slug>] [--namespace=<prefix>] [--show-in-rest=<bool>] [--field=<field>] [--fields=<fields>] [--format=<format>]
+wp ability list [--category=<slug>] [--namespace=<prefix>] [--public] [--show-in-rest] [--field=<field>] [--fields=<fields>] [--format=<format>]
 ~~~
 
 **OPTIONS**
@@ -85,8 +86,11 @@ wp ability list [--category=<slug>] [--namespace=<prefix>] [--show-in-rest=<bool
 	[--namespace=<prefix>]
 		Filter abilities by namespace prefix (e.g., 'core' for 'core/*' abilities).
 
-	[--show-in-rest=<bool>]
-		Filter abilities by REST API exposure.
+	[--public]
+		Only list abilities flagged for client exposure. Pass --no-public to invert.
+
+	[--show-in-rest]
+		Only list abilities exposed to the REST API. Pass --no-show-in-rest to invert.
 
 	[--field=<field>]
 		Prints the value of a single field for each ability.
@@ -121,7 +125,14 @@ These fields are optionally available:
 * readonly
 * destructive
 * idempotent
+* public
 * show_in_rest
+
+The `public` field reports the high-level client exposure flag as declared
+by the ability. As of WordPress 7.1 it seeds the default for channel-specific
+flags such as `show_in_rest`, which take precedence when set explicitly.
+On earlier versions the flag is stored but has no effect, so `public` and
+`show_in_rest` may disagree.
 
 **EXAMPLES**
 
@@ -141,7 +152,13 @@ These fields are optionally available:
     $ wp ability list --namespace=core
 
     # List abilities exposed to REST API.
-    $ wp ability list --show-in-rest=true
+    $ wp ability list --show-in-rest
+
+    # List abilities meant to be available to clients.
+    $ wp ability list --public
+
+    # Find abilities that opt out of REST despite being public.
+    $ wp ability list --public --no-show-in-rest
 
     # List abilities as JSON.
     $ wp ability list --format=json
@@ -186,6 +203,8 @@ wp ability get <name> [--field=<field>] [--fields=<fields>] [--format=<format>]
 
 **AVAILABLE FIELDS**
 
+These fields will be displayed by default:
+
 * name
 * label
 * category
@@ -195,7 +214,21 @@ wp ability get <name> [--field=<field>] [--fields=<fields>] [--format=<format>]
 * readonly
 * destructive
 * idempotent
+* public
 * show_in_rest
+
+These fields are optionally available:
+
+* meta
+
+The `public` field reports the high-level client exposure flag as declared
+by the ability. As of WordPress 7.1 it seeds the default for channel-specific
+flags such as `show_in_rest`, which take precedence when set explicitly.
+On earlier versions the flag is stored but has no effect, so `public` and
+`show_in_rest` may disagree.
+
+The `meta` field renders the raw metadata as JSON. It is the only way to
+inspect channel-specific settings registered by plugins, such as `mcp`.
 
 **EXAMPLES**
 
@@ -213,8 +246,13 @@ wp ability get <name> [--field=<field>] [--fields=<fields>] [--format=<format>]
     | readonly      | 1                    |
     | destructive   | 0                    |
     | idempotent    | 1                    |
+    | public        | 1                    |
     | show_in_rest  | 1                    |
     +---------------+----------------------+
+
+    # Inspect channel-specific settings that have no field of their own.
+    $ wp ability get my-plugin/my-ability --field=meta
+    {"annotations":{"readonly":true,"destructive":false,"idempotent":null},"mcp":{"public":false},"show_in_rest":true,"public":true}
 
     # Get ability as JSON.
     $ wp ability get core/get-site-info --format=json

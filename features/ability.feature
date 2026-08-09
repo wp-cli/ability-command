@@ -401,14 +401,32 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     When I try `wp ability list --public=bogus`
     Then STDERR should be:
       """
-      Error: Invalid boolean value for --public. Use 'true' or 'false'.
+      Error: Invalid boolean value for --public. Accepted: true, false, 1, 0, yes, no, on, off.
       """
 
     When I try `wp ability list --show-in-rest=bogus`
     Then STDERR should be:
       """
-      Error: Invalid boolean value for --show-in-rest. Use 'true' or 'false'.
+      Error: Invalid boolean value for --show-in-rest. Accepted: true, false, 1, 0, yes, no, on, off.
       """
+
+    When I try `wp ability list --public=`
+    Then STDERR should be:
+      """
+      Error: Invalid boolean value for --public. Accepted: true, false, 1, 0, yes, no, on, off.
+      """
+
+    When I try `wp ability list --show-in-rest=`
+    Then STDERR should be:
+      """
+      Error: Invalid boolean value for --show-in-rest. Accepted: true, false, 1, 0, yes, no, on, off.
+      """
+
+    When I run `wp ability list --public=yes --format=count`
+    Then STDOUT should not be empty
+
+    When I run `wp ability list --no-public --format=count`
+    Then STDOUT should not be empty
 
   @require-wp-7.1
   Scenario: Display the public flag and its precedence over channel flags.

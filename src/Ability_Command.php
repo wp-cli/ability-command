@@ -763,10 +763,16 @@ class Ability_Command extends WP_CLI_Command {
 			return null;
 		}
 
-		$parsed = filter_var( $value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
+		$parsed = null;
+
+		// An empty value is rejected rather than parsed, since
+		// FILTER_VALIDATE_BOOLEAN would silently accept it as false.
+		if ( '' !== $value ) {
+			$parsed = filter_var( $value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
+		}
 
 		if ( null === $parsed ) {
-			WP_CLI::error( "Invalid boolean value for --{$flag}. Use 'true' or 'false'." );
+			WP_CLI::error( "Invalid boolean value for --{$flag}. Accepted: true, false, 1, 0, yes, no, on, off." );
 		}
 
 		return $parsed;

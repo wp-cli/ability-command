@@ -384,16 +384,169 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       } );
       """
 
-    When I run `wp ability list --namespace=test-plugin --show-in-rest=true --field=name`
+    When I run `wp ability list --namespace=test-plugin --show-in-rest --field=name`
     Then STDOUT should be:
       """
       test-plugin/public-ability
       """
 
-    When I run `wp ability list --namespace=test-plugin --show-in-rest=false --field=name`
+    When I run `wp ability list --namespace=test-plugin --no-show-in-rest --field=name`
     Then STDOUT should be:
       """
       test-plugin/private-ability
+      """
+
+  @require-wp-7.1
+  Scenario: Display the public flag and its precedence over channel flags.
+    Given a wp-content/mu-plugins/test-ability.php file:
+      """
+      <?php
+      add_action( 'wp_abilities_api_categories_init', function() {
+          wp_register_ability_category( 'test-category', array(
+              'label'       => 'Test Category',
+              'description' => 'A test category.',
+          ) );
+      } );
+
+      add_action( 'wp_abilities_api_init', function() {
+          wp_register_ability( 'test-plugin/public-ability', array(
+              'label'               => 'Public Ability',
+              'description'         => 'A public ability.',
+              'category'            => 'test-category',
+              'execute_callback'    => function( $input ) {
+                  return array( 'result' => 'done' );
+              },
+              'permission_callback' => '__return_true',
+              'meta'                => array( 'public' => true ),
+          ) );
+
+          wp_register_ability( 'test-plugin/public-not-rest', array(
+              'label'               => 'Public But Not REST',
+              'description'         => 'A public ability hidden from REST.',
+              'category'            => 'test-category',
+              'execute_callback'    => function( $input ) {
+                  return array( 'result' => 'done' );
+              },
+              'permission_callback' => '__return_true',
+              'meta'                => array( 'public' => true, 'show_in_rest' => false ),
+          ) );
+
+          wp_register_ability( 'test-plugin/plain-ability', array(
+              'label'               => 'Plain Ability',
+              'description'         => 'An ability without exposure metadata.',
+              'category'            => 'test-category',
+              'execute_callback'    => function( $input ) {
+                  return array( 'result' => 'done' );
+              },
+              'permission_callback' => '__return_true',
+          ) );
+      } );
+      """
+
+    When I run `wp ability list --namespace=test-plugin --fields=name,public,show_in_rest`
+    Then STDOUT should be a table containing rows:
+      | name                        | public | show_in_rest |
+      | test-plugin/public-ability  | 1      | 1            |
+      | test-plugin/public-not-rest | 1      | 0            |
+      | test-plugin/plain-ability   | 0      | 0            |
+
+    When I run `wp ability get test-plugin/public-ability --format=json`
+    Then STDOUT should be JSON containing:
+      """
+      {"public":"1","show_in_rest":"1"}
+      """
+
+    When I run `wp ability get test-plugin/public-not-rest --format=json`
+    Then STDOUT should be JSON containing:
+      """
+      {"public":"1","show_in_rest":"0"}
+      """
+
+  @require-wp-7.1
+  Scenario: Filter abilities by public.
+    Given a wp-content/mu-plugins/test-ability.php file:
+      """
+      <?php
+      add_action( 'wp_abilities_api_categories_init', function() {
+          wp_register_ability_category( 'test-category', array(
+              'label'       => 'Test Category',
+              'description' => 'A test category.',
+          ) );
+      } );
+
+      add_action( 'wp_abilities_api_init', function() {
+          wp_register_ability( 'test-plugin/public-ability', array(
+              'label'               => 'Public Ability',
+              'description'         => 'A public ability.',
+              'category'            => 'test-category',
+              'execute_callback'    => function( $input ) {
+                  return array( 'result' => 'done' );
+              },
+              'permission_callback' => '__return_true',
+              'meta'                => array( 'public' => true ),
+          ) );
+
+          wp_register_ability( 'test-plugin/internal-ability', array(
+              'label'               => 'Internal Ability',
+              'description'         => 'An ability kept away from clients.',
+              'category'            => 'test-category',
+              'execute_callback'    => function( $input ) {
+                  return array( 'result' => 'done' );
+              },
+              'permission_callback' => '__return_true',
+              'meta'                => array( 'public' => false ),
+          ) );
+      } );
+      """
+
+    When I run `wp ability list --namespace=test-plugin --public --field=name`
+    Then STDOUT should be:
+      """
+      test-plugin/public-ability
+      """
+
+    When I run `wp ability list --namespace=test-plugin --no-public --field=name`
+    Then STDOUT should be:
+      """
+      test-plugin/internal-ability
+      """
+
+  @require-wp-6.9
+  Scenario: Inspect raw ability meta.
+    Given a wp-content/mu-plugins/test-ability.php file:
+      """
+      <?php
+      add_action( 'wp_abilities_api_categories_init', function() {
+          wp_register_ability_category( 'test-category', array(
+              'label'       => 'Test Category',
+              'description' => 'A test category.',
+          ) );
+      } );
+
+      add_action( 'wp_abilities_api_init', function() {
+          wp_register_ability( 'test-plugin/channel-ability', array(
+              'label'               => 'Channel Ability',
+              'description'         => 'An ability with channel-specific metadata.',
+              'category'            => 'test-category',
+              'execute_callback'    => function( $input ) {
+                  return array( 'result' => 'done' );
+              },
+              'permission_callback' => '__return_true',
+              'meta'                => array( 'mcp' => array( 'public' => false ) ),
+          ) );
+      } );
+      """
+
+    When I run `wp ability get test-plugin/channel-ability --field=meta`
+    Then STDOUT should contain:
+      """
+      "mcp":{"public":false}
+      """
+
+    When I run `wp ability get test-plugin/channel-ability`
+    Then STDOUT should not contain:
+      """
+      mcp
       """
 
   @require-wp-6.9

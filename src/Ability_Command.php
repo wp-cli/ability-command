@@ -182,7 +182,7 @@ class Ability_Command extends WP_CLI_Command {
 		$abilities     = wp_get_abilities();
 		$category_slug = Utils\get_flag_value( $assoc_args, 'category' );
 		$namespace     = Utils\get_flag_value( $assoc_args, 'namespace' );
-		$show_in_rest  = Utils\get_flag_value( $assoc_args, 'show-in-rest' );
+		$show_in_rest  = $this->parse_bool_filter( $assoc_args, 'show-in-rest' );
 
 		$items = [];
 
@@ -205,9 +205,8 @@ class Ability_Command extends WP_CLI_Command {
 
 			// Filter by show_in_rest if specified.
 			if ( null !== $show_in_rest ) {
-				$show_in_rest_bool = filter_var( $show_in_rest, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
-				$ability_rest      = '1' === $ability_data['show_in_rest'];
-				if ( null !== $show_in_rest_bool && $show_in_rest_bool !== $ability_rest ) {
+				$ability_rest = '1' === $ability_data['show_in_rest'];
+				if ( $show_in_rest !== $ability_rest ) {
 					continue;
 				}
 			}
@@ -692,6 +691,29 @@ class Ability_Command extends WP_CLI_Command {
 			'destructive' => isset( $annotations['destructive'] ) && is_bool( $annotations['destructive'] ) ? $annotations['destructive'] : null,
 			'idempotent'  => isset( $annotations['idempotent'] ) && is_bool( $annotations['idempotent'] ) ? $annotations['idempotent'] : null,
 		];
+	}
+
+	/**
+	 * Parses a boolean filter flag.
+	 *
+	 * @param array  $assoc_args Associative arguments.
+	 * @param string $flag       The flag name.
+	 * @return bool|null The parsed value, or null when the flag was not provided.
+	 */
+	private function parse_bool_filter( $assoc_args, $flag ) {
+		$value = Utils\get_flag_value( $assoc_args, $flag );
+
+		if ( null === $value ) {
+			return null;
+		}
+
+		$parsed = filter_var( $value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
+
+		if ( null === $parsed ) {
+			WP_CLI::error( "Invalid boolean value for --{$flag}. Use 'true' or 'false'." );
+		}
+
+		return $parsed;
 	}
 
 	/**

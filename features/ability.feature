@@ -397,6 +397,14 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       """
 
   @require-wp-6.9
+  Scenario: Reject invalid boolean filter values.
+    When I try `wp ability list --show-in-rest=bogus`
+    Then STDERR should be:
+      """
+      Error: Invalid boolean value for --show-in-rest. Use 'true' or 'false'.
+      """
+
+  @require-wp-6.9
   Scenario: Display ability annotations.
     Given a wp-content/mu-plugins/test-ability.php file:
       """

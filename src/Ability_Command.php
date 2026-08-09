@@ -110,9 +110,19 @@ class Ability_Command extends WP_CLI_Command {
 	 *
 	 * [--public=<bool>]
 	 * : Filter abilities by the high-level client exposure flag.
+	 * ---
+	 * options:
+	 *   - true
+	 *   - false
+	 * ---
 	 *
 	 * [--show-in-rest=<bool>]
 	 * : Filter abilities by REST API exposure.
+	 * ---
+	 * options:
+	 *   - true
+	 *   - false
+	 * ---
 	 *
 	 * [--field=<field>]
 	 * : Prints the value of a single field for each ability.
@@ -200,8 +210,8 @@ class Ability_Command extends WP_CLI_Command {
 		$abilities     = wp_get_abilities();
 		$category_slug = Utils\get_flag_value( $assoc_args, 'category' );
 		$namespace     = Utils\get_flag_value( $assoc_args, 'namespace' );
-		$public        = $this->parse_bool_filter( $assoc_args, 'public' );
-		$show_in_rest  = $this->parse_bool_filter( $assoc_args, 'show-in-rest' );
+		$public        = Utils\get_flag_value( $assoc_args, 'public' );
+		$show_in_rest  = Utils\get_flag_value( $assoc_args, 'show-in-rest' );
 
 		$items = [];
 
@@ -222,18 +232,23 @@ class Ability_Command extends WP_CLI_Command {
 				}
 			}
 
-			// Filter by public if specified.
+			/*
+			 * Filter by exposure if specified. The synopsis restricts these to
+			 * 'true' or 'false', which WP-CLI validates before the command runs.
+			 * The bare `--public` and `--show-in-rest` forms arrive as boolean true.
+			 */
 			if ( null !== $public ) {
+				$wanted_public  = 'true' === $public || true === $public;
 				$ability_public = '1' === $ability_data['public'];
-				if ( $public !== $ability_public ) {
+				if ( $wanted_public !== $ability_public ) {
 					continue;
 				}
 			}
 
-			// Filter by show_in_rest if specified.
 			if ( null !== $show_in_rest ) {
+				$wanted_rest  = 'true' === $show_in_rest || true === $show_in_rest;
 				$ability_rest = '1' === $ability_data['show_in_rest'];
-				if ( $show_in_rest !== $ability_rest ) {
+				if ( $wanted_rest !== $ability_rest ) {
 					continue;
 				}
 			}
@@ -743,35 +758,6 @@ class Ability_Command extends WP_CLI_Command {
 			'destructive' => isset( $annotations['destructive'] ) && is_bool( $annotations['destructive'] ) ? $annotations['destructive'] : null,
 			'idempotent'  => isset( $annotations['idempotent'] ) && is_bool( $annotations['idempotent'] ) ? $annotations['idempotent'] : null,
 		];
-	}
-
-	/**
-	 * Parses a boolean filter flag.
-	 *
-	 * @param array  $assoc_args Associative arguments.
-	 * @param string $flag       The flag name.
-	 * @return bool|null The parsed value, or null when the flag was not provided.
-	 */
-	private function parse_bool_filter( $assoc_args, $flag ) {
-		$value = Utils\get_flag_value( $assoc_args, $flag );
-
-		if ( null === $value ) {
-			return null;
-		}
-
-		$parsed = null;
-
-		// An empty value is rejected rather than parsed, since
-		// FILTER_VALIDATE_BOOLEAN would silently accept it as false.
-		if ( '' !== $value ) {
-			$parsed = filter_var( $value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
-		}
-
-		if ( null === $parsed ) {
-			WP_CLI::error( "Invalid boolean value for --{$flag}. Accepted: true, false, 1, 0, yes, no, on, off." );
-		}
-
-		return $parsed;
 	}
 
 	/**

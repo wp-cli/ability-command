@@ -241,8 +241,6 @@ class Ability_Command extends WP_CLI_Command {
 			$items[] = $ability_data;
 		}
 
-		$this->maybe_debug_inert_public_flag( $items );
-
 		$formatter = $this->get_formatter( $assoc_args, $this->default_fields );
 		$formatter->display_items( $items );
 	}
@@ -344,8 +342,6 @@ class Ability_Command extends WP_CLI_Command {
 		}
 
 		$ability_data = $this->format_ability_for_get( $ability );
-
-		$this->maybe_debug_inert_public_flag( [ $ability_data ] );
 
 		$formatter = $this->get_formatter( $assoc_args, $this->get_fields );
 		$formatter->display_item( $ability_data );
@@ -776,33 +772,6 @@ class Ability_Command extends WP_CLI_Command {
 		}
 
 		return $parsed;
-	}
-
-	/**
-	 * Emits a debug note when the `public` meta flag is declared but inert.
-	 *
-	 * WordPress only resolves `public` into channel-specific flags such as
-	 * `show_in_rest` as of 7.1. On earlier versions the flag is stored as
-	 * declared but has no effect on client exposure, so `public` and
-	 * `show_in_rest` can disagree for no visible reason.
-	 *
-	 * @param array<int,array<string,mixed>> $items The formatted abilities.
-	 * @return void
-	 */
-	private function maybe_debug_inert_public_flag( $items ) {
-		if ( ! Utils\wp_version_compare( '7.1', '<' ) ) {
-			return;
-		}
-
-		foreach ( $items as $item ) {
-			if ( isset( $item['public'] ) && '1' === $item['public'] ) {
-				WP_CLI::debug(
-					'The `public` meta flag is only resolved into channel-specific flags such as `show_in_rest` as of WordPress 7.1. On this version it is reported as declared but has no effect on client exposure.',
-					'ability'
-				);
-				return;
-			}
-		}
 	}
 
 	/**

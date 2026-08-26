@@ -27,3 +27,26 @@ parameters:
     -
       message: '#Cannot access offset string on mixed#'
       reportUnmatched: false
+
+    # johnbillion/wp-compat checks every WordPress symbol against the WordPress 4.9
+    # baseline that wp-cli-tests configures. It only recognizes function_exists() and
+    # method_exists() guards, so it cannot see the `before_invoke` check in
+    # ability-command.php that aborts every `wp ability` command below WordPress 6.9.
+    #
+    # The entries below match on the message as well as the identifier, naming both the
+    # symbols and that version, so a call to anything introduced after 6.9 still gets
+    # reported rather than swallowed by a file-wide ignore.
+    -
+      identifier: WPCompat.functionNotAvailable
+      message: '#^(wp_get_abilities|wp_get_ability|wp_get_ability_categories|wp_get_ability_category|wp_has_ability|wp_has_ability_category)\(\) is only available since WordPress version 6\.9\.0\.$#'
+      paths:
+        - src/Ability_Command.php
+        - src/Ability_Category_Command.php
+    -
+      identifier: WPCompat.methodNotAvailable
+      message: '#^WP_Ability::(check_permissions|execute|get_category|get_description|get_input_schema|get_label|get_meta|get_meta_item|get_name|get_output_schema|normalize_input|validate_input)\(\) is only available since WordPress version 6\.9\.0\.$#'
+      path: src/Ability_Command.php
+    -
+      identifier: WPCompat.methodNotAvailable
+      message: '#^WP_Ability_Category::(get_description|get_label|get_meta|get_slug)\(\) is only available since WordPress version 6\.9\.0\.$#'
+      path: src/Ability_Category_Command.php

@@ -17,24 +17,24 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       """
       <?php
       add_action(
-      	'wp_abilities_api_categories_init',
-      	function () {
-      		wp_register_ability_category(
-      			'content',
-      			array(
-      				'label'       => 'Content',
-      				'description' => 'Content management abilities.',
-      			)
-      		);
+          'wp_abilities_api_categories_init',
+          function () {
+              wp_register_ability_category(
+                  'content',
+                  array(
+                      'label'       => 'Content',
+                      'description' => 'Content management abilities.',
+                  )
+              );
 
-      		wp_register_ability_category(
-      			'ai',
-      			array(
-      				'label'       => 'AI',
-      				'description' => 'AI-powered abilities.',
-      			)
-      		);
-      	}
+              wp_register_ability_category(
+                  'ai',
+                  array(
+                      'label'       => 'AI',
+                      'description' => 'AI-powered abilities.',
+                  )
+              );
+          }
       );
       """
 
@@ -66,16 +66,16 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       """
       <?php
       add_action(
-      	'wp_abilities_api_categories_init',
-      	function () {
-      		wp_register_ability_category(
-      			'content',
-      			array(
-      				'label'       => 'Content',
-      				'description' => 'Content management abilities.',
-      			)
-      		);
-      	}
+          'wp_abilities_api_categories_init',
+          function () {
+              wp_register_ability_category(
+                  'content',
+                  array(
+                      'label'       => 'Content',
+                      'description' => 'Content management abilities.',
+                  )
+              );
+          }
       );
       """
 
@@ -110,16 +110,16 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       """
       <?php
       add_action(
-      	'wp_abilities_api_categories_init',
-      	function () {
-      		wp_register_ability_category(
-      			'content',
-      			array(
-      				'label'       => 'Content',
-      				'description' => 'Content management abilities.',
-      			)
-      		);
-      	}
+          'wp_abilities_api_categories_init',
+          function () {
+              wp_register_ability_category(
+                  'content',
+                  array(
+                      'label'       => 'Content',
+                      'description' => 'Content management abilities.',
+                  )
+              );
+          }
       );
       """
 
@@ -135,28 +135,28 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       """
       <?php
       add_action(
-      	'wp_abilities_api_categories_init',
-      	function () {
-      		wp_register_ability_category(
-      			'custom-meta',
-      			array(
-      				'label'       => 'Custom Meta Category',
-      				'description' => 'A category with custom meta.',
-      				'meta'        => array(
-      					'custom_key' => 'custom_value',
-      					'version'    => '1.0',
-      				),
-      			)
-      		);
+          'wp_abilities_api_categories_init',
+          function () {
+              wp_register_ability_category(
+                  'custom-meta',
+                  array(
+                      'label'       => 'Custom Meta Category',
+                      'description' => 'A category with custom meta.',
+                      'meta'        => array(
+                          'custom_key' => 'custom_value',
+                          'version'    => '1.0',
+                      ),
+                  )
+              );
 
-      		wp_register_ability_category(
-      			'no-meta',
-      			array(
-      				'label'       => 'No Meta Category',
-      				'description' => 'A category without custom meta.',
-      			)
-      		);
-      	}
+              wp_register_ability_category(
+                  'no-meta',
+                  array(
+                      'label'       => 'No Meta Category',
+                      'description' => 'A category without custom meta.',
+                  )
+              );
+          }
       );
       """
 

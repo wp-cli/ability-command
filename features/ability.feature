@@ -16,35 +16,50 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category for abilities.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category for abilities.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/get-site-title', array(
-              'label'               => 'Get Site Title',
-              'description'         => 'Returns the site title.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'title' => get_bloginfo( 'name' ) );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'show_in_rest' => true ),
-          ) );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/get-site-title',
+      			array(
+      				'label'               => 'Get Site Title',
+      				'description'         => 'Returns the site title.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'title' => get_bloginfo( 'name' ) );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'show_in_rest' => true ),
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/echo-input', array(
-              'label'               => 'Echo Input',
-              'description'         => 'Echoes back the input.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return $input;
-              },
-              'permission_callback' => '__return_true',
-          ) );
-      } );
+      		wp_register_ability(
+      			'test-plugin/echo-input',
+      			array(
+      				'label'               => 'Echo Input',
+      				'description'         => 'Echoes back the input.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return $input;
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability list`
@@ -85,25 +100,37 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/get-site-title', array(
-              'label'               => 'Get Site Title',
-              'description'         => 'Returns the site title.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'title' => get_bloginfo( 'name' ) );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'show_in_rest' => true ),
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/get-site-title',
+      			array(
+      				'label'               => 'Get Site Title',
+      				'description'         => 'Returns the site title.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'title' => get_bloginfo( 'name' ) );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'show_in_rest' => true ),
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability get test-plugin/get-site-title`
@@ -137,74 +164,95 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/get-site-title', array(
-              'label'               => 'Get Site Title',
-              'description'         => 'Returns the site title.',
-              'category'            => 'test-category',
-              'input_schema'        => array(
-                  'type'       => 'object',
-                  'properties' => array(),
-              ),
-              'execute_callback'    => function( $input ) {
-                  return array( 'title' => get_bloginfo( 'name' ) );
-              },
-              'permission_callback' => '__return_true',
-          ) );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/get-site-title',
+      			array(
+      				'label'               => 'Get Site Title',
+      				'description'         => 'Returns the site title.',
+      				'category'            => 'test-category',
+      				'input_schema'        => array(
+      					'type'       => 'object',
+      					'properties' => array(),
+      				),
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'title' => get_bloginfo( 'name' ) );
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/echo-input', array(
-              'label'               => 'Echo Input',
-              'description'         => 'Echoes back the input.',
-              'category'            => 'test-category',
-              'input_schema'        => array(
-                  'type'                 => 'object',
-                  'additionalProperties' => true,
-              ),
-              'execute_callback'    => function( $input ) {
-                  return $input;
-              },
-              'permission_callback' => '__return_true',
-          ) );
+      		wp_register_ability(
+      			'test-plugin/echo-input',
+      			array(
+      				'label'               => 'Echo Input',
+      				'description'         => 'Echoes back the input.',
+      				'category'            => 'test-category',
+      				'input_schema'        => array(
+      					'type'                 => 'object',
+      					'additionalProperties' => true,
+      				),
+      				'execute_callback'    => function ( $input ) {
+      					return $input;
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/add-numbers', array(
-              'label'               => 'Add Numbers',
-              'description'         => 'Adds two numbers.',
-              'category'            => 'test-category',
-              'input_schema'        => array(
-                  'type'       => 'object',
-                  'properties' => array(
-                      'a' => array( 'type' => 'integer' ),
-                      'b' => array( 'type' => 'integer' ),
-                  ),
-              ),
-              'execute_callback'    => function( $input ) {
-                  $a = isset( $input['a'] ) ? (int) $input['a'] : 0;
-                  $b = isset( $input['b'] ) ? (int) $input['b'] : 0;
-                  return array( 'sum' => $a + $b );
-              },
-              'permission_callback' => '__return_true',
-          ) );
+      		wp_register_ability(
+      			'test-plugin/add-numbers',
+      			array(
+      				'label'               => 'Add Numbers',
+      				'description'         => 'Adds two numbers.',
+      				'category'            => 'test-category',
+      				'input_schema'        => array(
+      					'type'       => 'object',
+      					'properties' => array(
+      						'a' => array( 'type' => 'integer' ),
+      						'b' => array( 'type' => 'integer' ),
+      					),
+      				),
+      				'execute_callback'    => function ( $input ) {
+      					$a = isset( $input['a'] ) ? (int) $input['a'] : 0;
+      					$b = isset( $input['b'] ) ? (int) $input['b'] : 0;
+      					return array( 'sum' => $a + $b );
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/simple-no-input', array(
-              'label'               => 'Simple No Input',
-              'description'         => 'Returns an empty array.',
-              'category'            => 'test-category',
-              'output_schema'       => array(
-                  'type' => 'array',
-              ),
-              'execute_callback'    => function( $input = null ) {
-                  return array();
-              },
-              'permission_callback' => '__return_true',
-          ) );
-      } );
+      		wp_register_ability(
+      			'test-plugin/simple-no-input',
+      			array(
+      				'label'               => 'Simple No Input',
+      				'description'         => 'Returns an empty array.',
+      				'category'            => 'test-category',
+      				'output_schema'       => array(
+      					'type' => 'array',
+      				),
+      				'execute_callback'    => function ( $input = null ) {
+      					return array();
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability run test-plugin/get-site-title`
@@ -266,24 +314,36 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/get-site-title', array(
-              'label'               => 'Get Site Title',
-              'description'         => 'Returns the site title.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'title' => get_bloginfo( 'name' ) );
-              },
-              'permission_callback' => '__return_true',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/get-site-title',
+      			array(
+      				'label'               => 'Get Site Title',
+      				'description'         => 'Returns the site title.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'title' => get_bloginfo( 'name' ) );
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability exists test-plugin/get-site-title`
@@ -297,36 +357,51 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/get-site-title', array(
-              'label'               => 'Get Site Title',
-              'description'         => 'Returns the site title.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'title' => get_bloginfo( 'name' ) );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'show_in_rest' => true ),
-          ) );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/get-site-title',
+      			array(
+      				'label'               => 'Get Site Title',
+      				'description'         => 'Returns the site title.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'title' => get_bloginfo( 'name' ) );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'show_in_rest' => true ),
+      			) 
+      		);
 
-          wp_register_ability( 'other-plugin/do-something', array(
-              'label'               => 'Do Something',
-              'description'         => 'Does something.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'result' => 'done' );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'show_in_rest' => false ),
-          ) );
-      } );
+      		wp_register_ability(
+      			'other-plugin/do-something',
+      			array(
+      				'label'               => 'Do Something',
+      				'description'         => 'Does something.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'result' => 'done' );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'show_in_rest' => false ),
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability list --namespace=test-plugin --format=count`
@@ -352,36 +427,51 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/public-ability', array(
-              'label'               => 'Public Ability',
-              'description'         => 'A public ability.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'public' => true );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'show_in_rest' => true ),
-          ) );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/public-ability',
+      			array(
+      				'label'               => 'Public Ability',
+      				'description'         => 'A public ability.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'public' => true );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'show_in_rest' => true ),
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/private-ability', array(
-              'label'               => 'Private Ability',
-              'description'         => 'A private ability.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'private' => true );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'show_in_rest' => false ),
-          ) );
-      } );
+      		wp_register_ability(
+      			'test-plugin/private-ability',
+      			array(
+      				'label'               => 'Private Ability',
+      				'description'         => 'A private ability.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'private' => true );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'show_in_rest' => false ),
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability list --namespace=test-plugin --show-in-rest --field=name`
@@ -401,46 +491,67 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/public-ability', array(
-              'label'               => 'Public Ability',
-              'description'         => 'A public ability.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'result' => 'done' );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'public' => true ),
-          ) );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/public-ability',
+      			array(
+      				'label'               => 'Public Ability',
+      				'description'         => 'A public ability.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'result' => 'done' );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'public' => true ),
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/public-not-rest', array(
-              'label'               => 'Public But Not REST',
-              'description'         => 'A public ability hidden from REST.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'result' => 'done' );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'public' => true, 'show_in_rest' => false ),
-          ) );
+      		wp_register_ability(
+      			'test-plugin/public-not-rest',
+      			array(
+      				'label'               => 'Public But Not REST',
+      				'description'         => 'A public ability hidden from REST.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'result' => 'done' );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array(
+      					'public' => true,
+      					'show_in_rest' => false,
+      				),
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/plain-ability', array(
-              'label'               => 'Plain Ability',
-              'description'         => 'An ability without exposure metadata.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'result' => 'done' );
-              },
-              'permission_callback' => '__return_true',
-          ) );
-      } );
+      		wp_register_ability(
+      			'test-plugin/plain-ability',
+      			array(
+      				'label'               => 'Plain Ability',
+      				'description'         => 'An ability without exposure metadata.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'result' => 'done' );
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability list --namespace=test-plugin --fields=name,public,show_in_rest`
@@ -467,36 +578,51 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/public-ability', array(
-              'label'               => 'Public Ability',
-              'description'         => 'A public ability.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'result' => 'done' );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'public' => true ),
-          ) );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/public-ability',
+      			array(
+      				'label'               => 'Public Ability',
+      				'description'         => 'A public ability.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'result' => 'done' );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'public' => true ),
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/internal-ability', array(
-              'label'               => 'Internal Ability',
-              'description'         => 'An ability kept away from clients.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'result' => 'done' );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'public' => false ),
-          ) );
-      } );
+      		wp_register_ability(
+      			'test-plugin/internal-ability',
+      			array(
+      				'label'               => 'Internal Ability',
+      				'description'         => 'An ability kept away from clients.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'result' => 'done' );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'public' => false ),
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability list --namespace=test-plugin --public --field=name`
@@ -516,25 +642,37 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/channel-ability', array(
-              'label'               => 'Channel Ability',
-              'description'         => 'An ability with channel-specific metadata.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'result' => 'done' );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array( 'mcp' => array( 'public' => false ) ),
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/channel-ability',
+      			array(
+      				'label'               => 'Channel Ability',
+      				'description'         => 'An ability with channel-specific metadata.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'result' => 'done' );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array( 'mcp' => array( 'public' => false ) ),
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability get test-plugin/channel-ability --field=meta`
@@ -554,31 +692,43 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/annotated-ability', array(
-              'label'               => 'Annotated Ability',
-              'description'         => 'An ability with annotations.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'result' => 'done' );
-              },
-              'permission_callback' => '__return_true',
-              'meta'                => array(
-                  'annotations' => array(
-                      'readonly'    => true,
-                      'destructive' => false,
-                      'idempotent'  => true,
-                  ),
-              ),
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/annotated-ability',
+      			array(
+      				'label'               => 'Annotated Ability',
+      				'description'         => 'An ability with annotations.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'result' => 'done' );
+      				},
+      				'permission_callback' => '__return_true',
+      				'meta'                => array(
+      					'annotations' => array(
+      						'readonly'    => true,
+      						'destructive' => false,
+      						'idempotent'  => true,
+      					),
+      				),
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability get test-plugin/annotated-ability --format=json`
@@ -597,34 +747,49 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/allowed-ability', array(
-              'label'               => 'Allowed Ability',
-              'description'         => 'An ability anyone can run.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'allowed' => true );
-              },
-              'permission_callback' => '__return_true',
-          ) );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/allowed-ability',
+      			array(
+      				'label'               => 'Allowed Ability',
+      				'description'         => 'An ability anyone can run.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'allowed' => true );
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/denied-ability', array(
-              'label'               => 'Denied Ability',
-              'description'         => 'An ability no one can run.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'denied' => true );
-              },
-              'permission_callback' => '__return_false',
-          ) );
-      } );
+      		wp_register_ability(
+      			'test-plugin/denied-ability',
+      			array(
+      				'label'               => 'Denied Ability',
+      				'description'         => 'An ability no one can run.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'denied' => true );
+      				},
+      				'permission_callback' => '__return_false',
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability can-run test-plugin/allowed-ability`
@@ -644,42 +809,57 @@ Feature: Manage abilities registered via the WordPress Abilities API.
     Given a wp-content/mu-plugins/test-ability.php file:
       """
       <?php
-      add_action( 'wp_abilities_api_categories_init', function() {
-          wp_register_ability_category( 'test-category', array(
-              'label'       => 'Test Category',
-              'description' => 'A test category.',
-          ) );
-      } );
+      add_action(
+      	'wp_abilities_api_categories_init',
+      	function () {
+      		wp_register_ability_category(
+      			'test-category',
+      			array(
+      				'label'       => 'Test Category',
+      				'description' => 'A test category.',
+      			) 
+      		);
+      	} 
+      );
 
-      add_action( 'wp_abilities_api_init', function() {
-          wp_register_ability( 'test-plugin/typed-ability', array(
-              'label'               => 'Typed Ability',
-              'description'         => 'An ability with typed input.',
-              'category'            => 'test-category',
-              'input_schema'        => array(
-                  'type'       => 'object',
-                  'properties' => array(
-                      'count' => array( 'type' => 'integer' ),
-                      'name'  => array( 'type' => 'string' ),
-                  ),
-                  'required'   => array( 'count' ),
-              ),
-              'execute_callback'    => function( $input ) {
-                  return $input;
-              },
-              'permission_callback' => '__return_true',
-          ) );
+      add_action(
+      	'wp_abilities_api_init',
+      	function () {
+      		wp_register_ability(
+      			'test-plugin/typed-ability',
+      			array(
+      				'label'               => 'Typed Ability',
+      				'description'         => 'An ability with typed input.',
+      				'category'            => 'test-category',
+      				'input_schema'        => array(
+      					'type'       => 'object',
+      					'properties' => array(
+      						'count' => array( 'type' => 'integer' ),
+      						'name'  => array( 'type' => 'string' ),
+      					),
+      					'required'   => array( 'count' ),
+      				),
+      				'execute_callback'    => function ( $input ) {
+      					return $input;
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
 
-          wp_register_ability( 'test-plugin/no-input-ability', array(
-              'label'               => 'No Input Ability',
-              'description'         => 'An ability with no input schema.',
-              'category'            => 'test-category',
-              'execute_callback'    => function( $input ) {
-                  return array( 'no_input' => true );
-              },
-              'permission_callback' => '__return_true',
-          ) );
-      } );
+      		wp_register_ability(
+      			'test-plugin/no-input-ability',
+      			array(
+      				'label'               => 'No Input Ability',
+      				'description'         => 'An ability with no input schema.',
+      				'category'            => 'test-category',
+      				'execute_callback'    => function ( $input ) {
+      					return array( 'no_input' => true );
+      				},
+      				'permission_callback' => '__return_true',
+      			) 
+      		);
+      	} 
+      );
       """
 
     When I run `wp ability validate test-plugin/typed-ability --count=5 --name=test`

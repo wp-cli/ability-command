@@ -24,9 +24,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category for abilities.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -43,7 +43,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'show_in_rest' => true ),
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -56,9 +56,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return $input;
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -108,9 +108,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -127,9 +127,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'show_in_rest' => true ),
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -172,9 +172,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -194,7 +194,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return array( 'title' => get_bloginfo( 'name' ) );
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -211,7 +211,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return $input;
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -233,7 +233,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return array( 'sum' => $a + $b );
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -249,9 +249,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return array();
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -322,9 +322,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -340,9 +340,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return array( 'title' => get_bloginfo( 'name' ) );
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -365,9 +365,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -384,7 +384,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'show_in_rest' => true ),
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -398,9 +398,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'show_in_rest' => false ),
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -435,9 +435,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -454,7 +454,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'show_in_rest' => true ),
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -468,9 +468,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'show_in_rest' => false ),
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -499,9 +499,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -518,7 +518,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'public' => true ),
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -535,7 +535,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					'public' => true,
       					'show_in_rest' => false,
       				),
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -548,9 +548,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return array( 'result' => 'done' );
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -586,9 +586,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -605,7 +605,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'public' => true ),
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -619,9 +619,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'public' => false ),
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -650,9 +650,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -669,9 +669,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       				},
       				'permission_callback' => '__return_true',
       				'meta'                => array( 'mcp' => array( 'public' => false ) ),
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -700,9 +700,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -725,9 +725,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       						'idempotent'  => true,
       					),
       				),
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -755,9 +755,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -773,7 +773,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return array( 'allowed' => true );
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -786,9 +786,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return array( 'denied' => true );
       				},
       				'permission_callback' => '__return_false',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -817,9 +817,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Test Category',
       				'description' => 'A test category.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
 
       add_action(
@@ -843,7 +843,7 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return $input;
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
 
       		wp_register_ability(
@@ -856,9 +856,9 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       					return array( 'no_input' => true );
       				},
       				'permission_callback' => '__return_true',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 

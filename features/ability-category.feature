@@ -24,7 +24,7 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Content',
       				'description' => 'Content management abilities.',
-      			) 
+      			)
       		);
 
       		wp_register_ability_category(
@@ -32,9 +32,9 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       			array(
       				'label'       => 'AI',
       				'description' => 'AI-powered abilities.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -73,9 +73,9 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Content',
       				'description' => 'Content management abilities.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -117,9 +117,9 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       			array(
       				'label'       => 'Content',
       				'description' => 'Content management abilities.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 
@@ -146,7 +146,7 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       					'custom_key' => 'custom_value',
       					'version'    => '1.0',
       				),
-      			) 
+      			)
       		);
 
       		wp_register_ability_category(
@@ -154,9 +154,9 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       			array(
       				'label'       => 'No Meta Category',
       				'description' => 'A category without custom meta.',
-      			) 
+      			)
       		);
-      	} 
+      	}
       );
       """
 

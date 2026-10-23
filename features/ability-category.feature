@@ -20,7 +20,7 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
           'wp_abilities_api_categories_init',
           function () {
               wp_register_ability_category(
-                  'content',
+                  'test-content',
                   array(
                       'label'       => 'Content',
                       'description' => 'Content management abilities.',
@@ -28,7 +28,7 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
               );
 
               wp_register_ability_category(
-                  'ai',
+                  'test-ai',
                   array(
                       'label'       => 'AI',
                       'description' => 'AI-powered abilities.',
@@ -40,24 +40,24 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
 
     When I run `wp ability category list`
     Then STDOUT should be a table containing rows:
-      | slug    | label   | description                   |
-      | content | Content | Content management abilities. |
-      | ai      | AI      | AI-powered abilities.         |
+      | slug         | label   | description                   |
+      | test-content | Content | Content management abilities. |
+      | test-ai      | AI      | AI-powered abilities.         |
 
     When I run `wp ability category list --field=slug`
     Then STDOUT should contain:
       """
-      content
+      test-content
       """
     And STDOUT should contain:
       """
-      ai
+      test-ai
       """
 
     When I run `wp ability category list --format=json`
     Then STDOUT should contain:
       """
-      {"slug":"content"
+      {"slug":"test-content"
       """
 
   @require-wp-6.9
@@ -69,7 +69,7 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
           'wp_abilities_api_categories_init',
           function () {
               wp_register_ability_category(
-                  'content',
+                  'test-content',
                   array(
                       'label'       => 'Content',
                       'description' => 'Content management abilities.',
@@ -79,23 +79,23 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       );
       """
 
-    When I run `wp ability category get content`
+    When I run `wp ability category get test-content`
     Then STDOUT should be a table containing rows:
       | Field       | Value                         |
-      | slug        | content                       |
+      | slug        | test-content                  |
       | label       | Content                       |
       | description | Content management abilities. |
 
-    When I run `wp ability category get content --field=label`
+    When I run `wp ability category get test-content --field=label`
     Then STDOUT should be:
       """
       Content
       """
 
-    When I run `wp ability category get content --format=json`
+    When I run `wp ability category get test-content --format=json`
     Then STDOUT should be JSON containing:
       """
-      {"slug":"content"}
+      {"slug":"test-content"}
       """
 
     When I try `wp ability category get nonexistent`
@@ -113,7 +113,7 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
           'wp_abilities_api_categories_init',
           function () {
               wp_register_ability_category(
-                  'content',
+                  'test-content',
                   array(
                       'label'       => 'Content',
                       'description' => 'Content management abilities.',
@@ -123,7 +123,7 @@ Feature: Manage ability categories registered via the WordPress Abilities API.
       );
       """
 
-    When I run `wp ability category exists content`
+    When I run `wp ability category exists test-content`
     Then the return code should be 0
 
     When I try `wp ability category exists nonexistent`

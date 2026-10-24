@@ -95,6 +95,13 @@ Feature: Manage abilities registered via the WordPress Abilities API.
       "name":"test-plugin\/get-site-title"
       """
 
+    When I run `wp ability list --category=test-category --format=ids`
+    Then STDOUT should be:
+      """
+      test-plugin/get-site-title test-plugin/echo-input
+      """
+    And STDERR should be empty
+
   @require-wp-6.9
   Scenario: Get ability details.
     Given a wp-content/mu-plugins/test-ability.php file:

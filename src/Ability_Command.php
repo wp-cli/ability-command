@@ -242,6 +242,12 @@ class Ability_Command extends WP_CLI_Command {
 		}
 
 		$formatter = $this->get_formatter( $assoc_args, $this->default_fields );
+
+		// The ids format expects plain values, so pass the ability names.
+		if ( 'ids' === $formatter->format ) {
+			$items = wp_list_pluck( $items, 'name' );
+		}
+
 		$formatter->display_items( $items );
 	}
 
